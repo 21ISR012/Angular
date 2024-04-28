@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Cart Management</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #c5ac1e;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        section {
+            padding: 10px; /* Adjusted padding to make it smaller */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .product {
+            border: 1px solid #ccc;
+            margin: 10px;
+            padding: 15px;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 0 1 calc(33.33% - 20px); /* Adjusted size to make it smaller and fit 3 items in a row */
+        }
+        button {
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .homepage-content {
+            text-align: center;
+            padding: 20px;
+        }
+        .product-image {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Furniture Cart</h1>
+    </header>
+
+    <div class="homepage-content">
+        <h2>Welcome to our Furniture Page!</h2>
+        <p>Discover the latest trends and hottest deals on a variety of products. From modern wooden Furnitures, we have something for everyone.</p>
+        <p>Explore our selection and enjoy a seamless shopping experience. Don't miss out on our limited-time offers!</p>
+    </div>
+
+    <input type="text" id="search-bar" placeholder="Search products">
+
+    <section id="products">
+        <!-- Products will be dynamically loaded here -->
+    </section>
+
+    <section id="shopping-cart">
+        <h2>Shopping Cart</h2>
+        <ul id="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </ul>
+        <p>Total: <span id="cart-total">$0</span></p>
+        <button id="checkout-btn">Checkout</button>
+        <button id="address-btn">Address</button>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var cartTotal = 0;
+
+            // Dummy product data
+            var products = [
+                { id: 1, name: "Product 1", price: 50, imageUrl: "1.png" },
+                { id: 2, name: "Product 2", price: 30, imageUrl: "2.png" },
+                { id: 3, name: "Product 3", price: 30, imageUrl: "3.png" },
+                { id: 4, name: "Product 4", price: 30, imageUrl: "4.png" },
+                { id: 5, name: "Product 5", price: 30, imageUrl: "5.png" },
+                { id: 6, name: "Product 6", price: 30, imageUrl: "6.png" },
+                { id: 7, name: "Product 7", price: 30, imageUrl: "7.png" },
+                { id: 8, name: "Product 8", price: 30, imageUrl: "8.png" }
+            ];
+
+            // Function to add product to cart
+            function addToCart(product) {
+                $("#cart-items").append("<li>" + product.name + " - $" + product.price + "</li>");
+                cartTotal += product.price;
+                $("#cart-total").text("$" + cartTotal);
+            }
+
+            // Render products
+            function renderProducts(products) {
+                $("#products").empty();
+                products.forEach(function (product) {
+                    $("#products").append(`
+                        <div class="product">
+                            <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                            <h2>${product.name}</h2>
+                            <p>Description of ${product.name}.</p>
+                            <p>Price: $${product.price}</p>
+                            <button class="add-to-cart" data-product-id="${product.id}" data-price="${product.price}">Add to Cart</button>
+                        </div>
+                    `);
+                });
+            }
+
+            // Initial rendering of products
+            renderProducts(products);
+
+            // Add to cart functionality
+            $(document).on("click", ".add-to-cart", function () {
+                var productId = $(this).data("product-id");
+                var product = products.find(p => p.id === productId);
+                if (product) {
+                    addToCart(product);
+                }
+            });
+
+            // Checkout functionality
+            $("#checkout-btn").click(function () {
+                alert("Total: $" + cartTotal + ". Proceed to checkout.");
+            });
+
+            // Address button functionality
+            $("#address-btn").click(function () {
+                window.location.href = "examp.html";
+            });
+
+            // Search functionality
+            $("#search-bar").keyup(function () {
+                var searchTerm = $(this).val().toLowerCase();
+                var filteredProducts = products.filter(function (product) {
+                    return product.name.toLowerCase().includes(searchTerm);
+                });
+                renderProducts(filteredProducts);
+            });
+
+            // Dummy function to simulate dynamic loading
+            function loadMoreProducts() {
+                var moreProducts = [
+                    { id: 9, name: "Product 9", price: 40, imageUrl: "9.png" },
+                    { id: 10, name: "Product 10", price: 45, imageUrl: "10.png" }
+                    // Add more products here as needed
+                ];
+                products = products.concat(moreProducts);
+                renderProducts(moreProducts);
+            }
+
+            // Simulate dynamic loading when scrolling to the bottom of the page
+            $(window).scroll(function () {
+                if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+                    loadMoreProducts();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome Page</title>
+</head>
+<body>
+    <h1>Welcome, Successfully Login :)</h1>
+    <p id="myform"></p>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const formParagraph = document.getElementById('myform');
+
+        // Iterate through URL parameters and display them
+        params.forEach((value, key) => {
+            const textNode = document.createTextNode(`${key}: ${value}`);
+            const lineBreak = document.createElement('br');
+            formParagraph.appendChild(textNode);
+            formParagraph.appendChild(lineBreak);
+        });
+    </script>
+</body>
+</html>
